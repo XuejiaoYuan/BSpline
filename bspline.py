@@ -4,72 +4,91 @@ from BaseFunction import BaseFunction
 from U_quasi_uniform import U_quasi_uniform
 from mpl_toolkits.mplot3d import Axes3D
 
-x = []
-y = []
+X = []
+Y = []
 shadow = []
 block = []
 
-# with open('helio_pos.txt') as file:
-#     file_lines = file.readlines()
-#     for line in file_lines:
-#         line_str = line.strip('\n')
-#         str = line_str.split(' ')
-#         row_x = []
-#         row_y = []
-#         for index in len(str)/2:
-#             row_x.append(int(str[index]))
-#             row_y.append(int(str[index]))
-#         x.append(row_x)
-#         y.append(row_y)
-#
-# with open('time_shadow_block_h0.txt', 'r') as file:
-#     file_lines = file.readlines()
-#     for line in file_lines:
-#         line_str = line.strip('\n')
-#         str = line_str.split(' ')
-#         shadow_day = []
-#         block_day = []
-#         for index in len(str)/2:
-#             shadow_day.append(float(str[index]))
-#             block_day.append(float(str[index]))
-#         shadow.append(shadow_day)
-#         block.append(block_day)
+with open('res_g20/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
+    file_lines = file.readlines()
+    for line in file_lines:
+        line_str = line.strip('\n')
+        str = line.split(' ')
+        row_x = []
+        row_y = []
+        row_shadow = []
+        row_block = []
+        for index in range(int(len(str)/4)):
+            row_x.append(float(str[4 * index]))
+            row_y.append(float(str[4 * index+1]))
+            row_shadow.append(float(str[4 * index+2]))
+            row_block.append(float(str[4 * index+3]))
+        X.append(row_x)
+        Y.append(row_y)
+        shadow.append(row_shadow)
+        block.append(row_block)
+
+
+test_X = []
+test_Y = []
+test_shadow = []
+test_block = []
+with open('res_g18/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
+    file_lines = file.readlines()
+    for line in file_lines:
+        line_str = line.strip('\n')
+        str = line.split(' ')
+        row_x = []
+        row_y = []
+        row_shadow = []
+        row_block = []
+        for index in range(int(len(str)/4)):
+            row_x.append(float(str[4*index]))
+            row_y.append(float(str[4*index+1]))
+            row_shadow.append(float(str[4*index+2]))
+            row_block.append(float(str[4*index+3]))
+        test_X.append(row_x)
+        test_Y.append(row_y)
+        test_shadow.append(row_shadow)
+        test_block.append(row_block)
+
 
 # 控制点X，Y，Z坐标
-X = [[0, 0, 0, 3, 6],
-     [20, 20, 20, 23, 26],
-     [40, 40, 40, 43, 46],
-     [60, 60, 60, 63, 66]];
-Y = [[0, 0, 0, 20, 40],
-     [0, 7, 7, 20, 43],
-     [0, 7, 7, 20, 43],
-     [0, 0, 0, 20, 40]];
-Z = [[60, 30, 0, 0, -5],
-     [50, 30, 0, 0, -5],
-     [60, 30, 0, 0, -5],
-     [60, 30, 0, 0, -5]];
+# X = [[0, 0, 0, 3, 6],
+#      [20, 20, 20, 23, 26],
+#      [40, 40, 40, 43, 46],
+#      [60, 60, 60, 63, 66]];
+# Y = [[0, 0, 0, 20, 40],
+#      [0, 7, 7, 20, 43],
+#      [0, 7, 7, 20, 43],
+#      [0, 0, 0, 20, 40]];
+# Z = [[60, 30, 0, 0, -5],
+#      [50, 30, 0, 0, -5],
+#      [60, 30, 0, 0, -5],
+#      [60, 30, 0, 0, -5]];
 M = len(X)
 N = len(X[0])
+Z = block
 
 # 绘制控制点连线网格
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-for i in range(M):
-    for j in range(N):
-        ax.scatter(X[i][j], Y[i][j], Z[i][j])
-    for j in range(N-1):
-        tmp_x = [X[i][j], X[i][j+1]]
-        tmp_y = [Y[i][j], Y[i][j+1]]
-        tmp_z = [Z[i][j], Z[i][j+1]]
-        ax.plot(tmp_x, tmp_y, tmp_z, color='b')
-
-for j in range(N):
-    for i in range(M-1):
-        tmp_x = [X[i][j], X[i+1][j]]
-        tmp_y = [Y[i][j], Y[i+1][j]]
-        tmp_z = [Z[i][j], Z[i+1][j]]
-        ax.plot(tmp_x, tmp_y, tmp_z, color='b')
+# for i in range(M):
+#     for j in range(N):
+#         ax.scatter(X[i][j], Y[i][j], Z[i][j])
+#     for j in range(N-1):
+#         tmp_x = [X[i][j], X[i][j+1]]
+#         tmp_y = [Y[i][j], Y[i][j+1]]
+#         tmp_z = [Z[i][j], Z[i][j+1]]
+#         ax.plot(tmp_x, tmp_y, tmp_z, color='b')
+#
+# for j in range(N):
+#     for i in range(M-1):
+#         tmp_x = [X[i][j], X[i+1][j]]
+#         tmp_y = [Y[i][j], Y[i+1][j]]
+#         tmp_z = [Z[i][j], Z[i+1][j]]
+#         ax.plot(tmp_x, tmp_y, tmp_z, color='b')
 
 # 绘制B样条网格
 FLAG_U = 2              # B样条类型
@@ -78,8 +97,8 @@ k = 2                   # k，l是网格的u向和v向的次数
 l = 2
 n = N - 1
 m = M - 1
-piece_u = 50            # u向节点向量的细分
-piece_v = 50
+piece_u = M            # u向节点向量的细分
+piece_v = N
 Nik_u = np.zeros((N, 1))
 Nik_v = np.zeros((M, 1))
 
@@ -152,4 +171,36 @@ for i in range(piece_v):
         tmp_z = [Z_MN_piece[i][j], Z_MN_piece[i][j+1]]
         ax.plot(tmp_x, tmp_y, tmp_z, color='g')
 
+# plt.show()
+
+bias_x = 600
+scale_x = 1180
+bias_y = 680
+scale_y = 580
+dis = []
+
+NodeVector_u = U_quasi_uniform(n, k)
+NodeVector_v = U_quasi_uniform(m, l)
+X_MN = np.zeros((M, N))
+Y_MN = np.zeros((M, N))
+Z_MN = np.zeros((M, N))
+for test_i in range(M):
+    for test_j in range(N):
+        u = (test_X[test_i][test_j] + bias_x) / scale_x
+        v = (test_Y[test_i][test_j] + bias_y) / scale_y
+        X_M = np.zeros((M, 1))
+        Y_M = np.zeros((M, 1))
+        Z_M = np.zeros((M, 1))
+        for i in range(M):
+            for ii in range(n+1):
+                Nik_u[ii][0] = BaseFunction(ii, k, u, NodeVector_u)
+            X_M[i][0] = np.dot(X[i], Nik_u)
+            Y_M[i][0] = np.dot(Y[i], Nik_u)
+            Z_M[i][0] = np.dot(Z[i], Nik_u)
+        for ii in range(m+1):
+            Nik_v[ii][0] = BaseFunction(ii, l, v, NodeVector_v)
+        X_MN[test_i][test_j] = np.dot(Nik_v.transpose(), X_M[:, 0])
+        Y_MN[test_i][test_j] = np.dot(Nik_v.transpose(), Y_M[:, 0])
+        Z_MN[test_i][test_j] = np.dot(Nik_v.transpose(), Z_M[:, 0])
+        ax.scatter(X_MN[test_i][test_j], Y_MN[test_i][test_j], Z_MN[test_i][test_j])
 plt.show()
