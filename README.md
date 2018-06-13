@@ -1,2 +1,2 @@
 # BSpline
- B-spline surface for use.
+B样条曲面表示的实现，包含均匀B样条和准均匀B样条两种形式。
