@@ -9,7 +9,7 @@ Y = []
 shadow = []
 block = []
 
-with open('res_g20/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
+with open('res_g12/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
     file_lines = file.readlines()
     for line in file_lines:
         line_str = line.strip('\n')
@@ -33,7 +33,7 @@ test_X = []
 test_Y = []
 test_shadow = []
 test_block = []
-with open('res_g18/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
+with open('res_g12/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
     file_lines = file.readlines()
     for line in file_lines:
         line_str = line.strip('\n')
@@ -73,6 +73,10 @@ Z = block
 # 绘制控制点连线网格
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
+
+# for i in range(M):
+#     for j in range(N):
+#         ax.scatter(test_X[i][j], test_Y[i][j], test_block[i][j])
 
 # for i in range(M):
 #     for j in range(N):
@@ -145,7 +149,7 @@ if FLAG_V == 1:
             Y_MN_piece[j][i] = np.dot(Nik_v.transpose(), Y_M_piece[:, i])
             Z_MN_piece[j][i] = np.dot(Nik_v.transpose(), Z_M_piece[:, i])
 if FLAG_V == 2:
-    NodeVector_v = U_quasi_uniform(m, l)                 # 均匀B样条的v向节点向量
+    NodeVector_v = U_quasi_uniform(m, l)                    # 均匀B样条的v向节点向量
     v = np.linspace(0, 1-0.0001, piece_v)
 
     for i in range(piece_u):
@@ -171,13 +175,19 @@ for i in range(piece_v):
         tmp_z = [Z_MN_piece[i][j], Z_MN_piece[i][j+1]]
         ax.plot(tmp_x, tmp_y, tmp_z, color='g')
 
-# plt.show()
+# print(X_MN_piece)
+# print('\n')
+# print(Y_MN_piece)
+# print('\n')
+# print(Z_MN_piece)
+
+plt.show()
 
 bias_x = 600
-scale_x = 1180
-bias_y = 680
-scale_y = 580
-dis = []
+scale_x = 1180.0 / 0.9999
+bias_y = 100
+scale_y = -580.0 / 0.9999
+dis = np.zeros((M, N))
 
 NodeVector_u = U_quasi_uniform(n, k)
 NodeVector_v = U_quasi_uniform(m, l)
@@ -194,13 +204,22 @@ for test_i in range(M):
         for i in range(M):
             for ii in range(n+1):
                 Nik_u[ii][0] = BaseFunction(ii, k, u, NodeVector_u)
+           # print(Nik_u)
             X_M[i][0] = np.dot(X[i], Nik_u)
             Y_M[i][0] = np.dot(Y[i], Nik_u)
             Z_M[i][0] = np.dot(Z[i], Nik_u)
         for ii in range(m+1):
             Nik_v[ii][0] = BaseFunction(ii, l, v, NodeVector_v)
+        # print(Nik_v)
         X_MN[test_i][test_j] = np.dot(Nik_v.transpose(), X_M[:, 0])
         Y_MN[test_i][test_j] = np.dot(Nik_v.transpose(), Y_M[:, 0])
         Z_MN[test_i][test_j] = np.dot(Nik_v.transpose(), Z_M[:, 0])
         ax.scatter(X_MN[test_i][test_j], Y_MN[test_i][test_j], Z_MN[test_i][test_j])
+print(X_MN)
+print('\n')
+print(Y_MN)
+print('\n')
+print(Z_MN)
 plt.show()
+
+
