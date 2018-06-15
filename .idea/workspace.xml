@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0025d89b-92a0-4cca-9b48-7fce15654e5c" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bspline.py" beforeDir="false" afterPath="$PROJECT_DIR$/bspline.py" afterDir="false" />
-    </list>
+    <list default="true" id="0025d89b-92a0-4cca-9b48-7fce15654e5c" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -209,7 +206,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/bspline.py</url>
+          <url />
           <line>222</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
