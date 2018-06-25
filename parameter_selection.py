@@ -2,11 +2,22 @@ import numpy as np
 
 
 def uniform_spaced(n):
+    '''
+    Calculate parameters using the uniform spaced method.
+    :param n: the number of the data points
+    :return: parameters
+    '''
     parameters = np.linspace(0, 1, n)
     return parameters
 
 
 def chord_length(n, P):
+    '''
+    Calculate parameters using the chord length method.
+    :param n: the number of the data points
+    :param P: data points
+    :return: parameters
+    '''
     parameters = np.zeros((1, n))
     for i in range(1, n):
         dis = np.sqrt(np.sum(np.square(P[i] - P[i-1])))     # square计算各元素的平方
@@ -18,9 +29,10 @@ def chord_length(n, P):
 
 def centripetal(n, P):
     '''
-    :param n: 控制点数目
-    :param P: 数据点
-    :return: 数据点对应参数
+    Calculate parameters using the centripetal method.
+    :param n: the number of data points
+    :param P: data points
+    :return: parameters
     '''
     a = 0.5
     parameters = np.zeros((1, n))
@@ -34,19 +46,20 @@ def centripetal(n, P):
 
 def knot_vector(param, k, n):
     '''
-    :param param: 参数
-    :param k: 阶数
-    :param n: 控制点数目
-    :return: 节点向量
+    Generate knot vector.
+    :param param: parameters
+    :param k: degree
+    :param n: the number of data points
+    :return: knot vector
     '''
-    m = n + k
+    m = n + k + 1
     knot = np.zeros((1, m))
-    for i in range(k):
+    for i in range(k + 1):
         knot[0][i] = 0
-    for i in range(m - k, m):
+    for i in range(m - k - 1, m):
         knot[0][i] = 1
-    for i in range(k, m - k):
-        for j in range(i - k + 1, i):
+    for i in range(k + 1, m - k - 1):
+        for j in range(i - k, i):
             knot[0][i] = knot[0][i] + param[j]
-        knot[0][i] = knot[0][i] / (k - 1)
+        knot[0][i] = knot[0][i] / k
     return knot[0]

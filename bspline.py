@@ -9,66 +9,66 @@ Y = []
 shadow = []
 block = []
 
-with open('res_g12/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
-    file_lines = file.readlines()
-    for line in file_lines:
-        line_str = line.strip('\n')
-        str = line.split(' ')
-        row_x = []
-        row_y = []
-        row_shadow = []
-        row_block = []
-        for index in range(int(len(str)/4)):
-            row_x.append(float(str[4 * index]))
-            row_y.append(float(str[4 * index+1]))
-            row_shadow.append(float(str[4 * index+2]))
-            row_block.append(float(str[4 * index+3]))
-        X.append(row_x)
-        Y.append(row_y)
-        shadow.append(row_shadow)
-        block.append(row_block)
-
-
-test_X = []
-test_Y = []
-test_shadow = []
-test_block = []
-with open('res_g12/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
-    file_lines = file.readlines()
-    for line in file_lines:
-        line_str = line.strip('\n')
-        str = line.split(' ')
-        row_x = []
-        row_y = []
-        row_shadow = []
-        row_block = []
-        for index in range(int(len(str)/4)):
-            row_x.append(float(str[4*index]))
-            row_y.append(float(str[4*index+1]))
-            row_shadow.append(float(str[4*index+2]))
-            row_block.append(float(str[4*index+3]))
-        test_X.append(row_x)
-        test_Y.append(row_y)
-        test_shadow.append(row_shadow)
-        test_block.append(row_block)
+# with open('res_g12/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
+#     file_lines = file.readlines()
+#     for line in file_lines:
+#         line_str = line.strip('\n')
+#         str = line.split(' ')
+#         row_x = []
+#         row_y = []
+#         row_shadow = []
+#         row_block = []
+#         for index in range(int(len(str)/4)):
+#             row_x.append(float(str[4 * index]))
+#             row_y.append(float(str[4 * index+1]))
+#             row_shadow.append(float(str[4 * index+2]))
+#             row_block.append(float(str[4 * index+3]))
+#         X.append(row_x)
+#         Y.append(row_y)
+#         shadow.append(row_shadow)
+#         block.append(row_block)
+#
+#
+# test_X = []
+# test_Y = []
+# test_shadow = []
+# test_block = []
+# with open('res_g12/shadow_block_m1_d1_h8_min0.txt', 'r') as file:
+#     file_lines = file.readlines()
+#     for line in file_lines:
+#         line_str = line.strip('\n')
+#         str = line.split(' ')
+#         row_x = []
+#         row_y = []
+#         row_shadow = []
+#         row_block = []
+#         for index in range(int(len(str)/4)):
+#             row_x.append(float(str[4*index]))
+#             row_y.append(float(str[4*index+1]))
+#             row_shadow.append(float(str[4*index+2]))
+#             row_block.append(float(str[4*index+3]))
+#         test_X.append(row_x)
+#         test_Y.append(row_y)
+#         test_shadow.append(row_shadow)
+#         test_block.append(row_block)
 
 
 # 控制点X，Y，Z坐标
-# X = [[0, 0, 0, 3, 6],
-#      [20, 20, 20, 23, 26],
-#      [40, 40, 40, 43, 46],
-#      [60, 60, 60, 63, 66]];
-# Y = [[0, 0, 0, 20, 40],
-#      [0, 7, 7, 20, 43],
-#      [0, 7, 7, 20, 43],
-#      [0, 0, 0, 20, 40]];
-# Z = [[60, 30, 0, 0, -5],
-#      [50, 30, 0, 0, -5],
-#      [60, 30, 0, 0, -5],
-#      [60, 30, 0, 0, -5]];
+X = [[0, 0, 0, 3, 6],
+     [20, 20, 20, 23, 26],
+     [40, 40, 40, 43, 46],
+     [60, 60, 60, 63, 66]];
+Y = [[0, 0, 0, 20, 40],
+     [0, 7, 7, 20, 43],
+     [0, 7, 7, 20, 43],
+     [0, 0, 0, 20, 40]];
+Z = [[60, 30, 0, 0, -5],
+     [50, 30, 0, 0, -5],
+     [60, 30, 0, 0, -5],
+     [60, 30, 0, 0, -5]];
 M = len(X)
 N = len(X[0])
-Z = block
+# Z = block
 
 # 绘制控制点连线网格
 fig = plt.figure()
@@ -132,6 +132,7 @@ if FLAG_U == 2:
             X_M_piece[i][j] = np.dot(X[i], Nik_u)
             Y_M_piece[i][j] = np.dot(Y[i], Nik_u)
             Z_M_piece[i][j] = np.dot(Z[i], Nik_u)
+    print(Nik_u)
 
 # 2. v方向细分
 X_MN_piece = np.zeros((piece_v, piece_u))
