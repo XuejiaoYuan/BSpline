@@ -19,11 +19,13 @@ def curve_interpolation(D, N, k, param, knot):
     for i in range(N):
         for j in range(N):
             Nik[i][j] = bf.BaseFunction(j, k+1, param[i], knot)
-    print(Nik)
-    # P =  np.zeros((N, 2))        # control points
+    # print(Nik)
     Nik_inv = np.linalg.inv(Nik)
-    print(Nik_inv)
-    P = np.dot(Nik_inv, D)
+    # print(Nik_inv)
+    P = []
+    for i in range(len(D)):
+        P.append(np.dot(Nik_inv, D[i]).tolist())
+    # print(P)
     return P
 
 
@@ -43,30 +45,33 @@ def curve_approximation(D, N, H, k, param, knot):
     :param knot: knot vector
     :return: control points (H x 2)
     '''
-    P = np.zeros((H, 2))
+    P = []
     if H >= N or H <= k:
         print('Parameter H is out of range')
         return P
 
-    P[0] = D[0]
-    P[H-1] = D[N-1]
-    Qk = np.zeros((N-2, 2))
-    Nik = np.zeros((N, H))
-    for i in range(N):
-        for j in range(H):
-            Nik[i][j] = bf.BaseFunction(j, k+1, param[i], knot)
-    print(Nik)
+    for idx in range(len(D)):
+        P_ = np.zeros((1, H))
+        P_[0][0] = D[idx][0]
+        P_[0][H-1] = D[idx][N-1]
+        Qk = np.zeros((N - 2, 1))
+        Nik = np.zeros((N, H))
+        for i in range(N):
+            for j in range(H):
+                Nik[i][j] = bf.BaseFunction(j, k + 1, param[i], knot)
+        # print(Nik)
 
-    for j in range(1, N-1):
-        Qk[j-1] = D[j] - Nik[j][0]*P[0] - Nik[j][H-1]*P[H-1]
+        for j in range(1, N - 1):
+            Qk[j - 1] = D[idx][j] - Nik[j][0] * P_[0][0] - Nik[j][H - 1] * P_[0][H - 1]
 
-    N_part = Nik[1: N - 1, 1: H - 1]
-    print(N_part)
-    Q = np.dot(N_part.transpose(), Qk)
-    print(Q)
-    M = np.dot(np.transpose(N_part), N_part)
-    P[1:H-1] = np.dot(np.linalg.inv(M), Q)
-    print(P)
+        N_part = Nik[1: N - 1, 1: H - 1]
+        # print(N_part)
+        Q = np.dot(N_part.transpose(), Qk)
+        # print(Q)
+        M = np.dot(np.transpose(N_part), N_part)
+        P_[0][1:H - 1] = np.dot(np.linalg.inv(M), Q).transpose()
+        P.append(P_.tolist()[0])
+
     return P
 
 
@@ -85,5 +90,9 @@ def curve(P, N, k, param, knot):
     for i in range(len(param)):
         for j in range(N):
             Nik[i][j] = bf.BaseFunction(j, k+1, param[i], knot)
-    D = np.dot(Nik, P)
+    # D = np.dot(Nik, P)
+    D = []
+    for i in range(len(P)):
+        D.append(np.dot(Nik, P[i]).tolist())
+    # print(D)
     return D
