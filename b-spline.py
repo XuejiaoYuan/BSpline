@@ -32,7 +32,7 @@ def curve_inter_figure():
     Step 2. Calculate knot vector
     '''
     knot = ps.knot_vector(p_centripetal, k, D_N)
-    # print(knot)
+    print(knot)
 
     '''
     Step 3. Calculate control points
@@ -279,10 +279,10 @@ def surface_approx_figure():
     plt.show()
 
 
-# curve_inter_figure()
+curve_inter_figure()
 #
 # curve_approx_figure()
 #
 # surface_inter_figure()
-
-surface_approx_figure()
+#
+# surface_approx_figure()

@@ -69,3 +69,26 @@ def knot_vector(param, k, N):
             knot[0][i] = knot[0][i] + param[j]
         knot[0][i] = knot[0][i] / k
     return knot[0]
+
+
+def knot_vector_test(param, k, N):
+    m = N + k
+    knot = np.zeros((1, m+1))
+    for i in range(k+1):
+        knot[0][i] = param[0]
+    for i in range(m-k, m+1):
+        knot[0][i] = param[N-1]
+    for i in range(k+1, m-k):
+        for j in range(i-k, i):
+            knot[0][i] = knot[0][i] + param[j]
+        knot[0][i] = knot[0][i]/k
+    # knot = np.zeros((1, m+1))
+    # knot_max = int(param[N - 1] + 1)
+    # for i in range(k+1):
+    #     knot[0][i] = param[0]
+    # for i in range(m-k, m+1):
+    #     knot[0][i] = knot_max
+    # knot_div = (knot_max - param[0]) / (m + 1 - 2 * k)
+    # for i in range(k+1, m-k):
+    #     knot[0][i] = knot[0][i-1] + knot_div
+    return knot[0]
