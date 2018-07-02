@@ -25,21 +25,6 @@ def surface_interpolation(D, p, q):
     knot_uv = [[], []]
 
     # calculate parameters and knot vector
-    # D_col_X = D_X[0]
-    # D_col_Y = [y[0] for y in D_Y]
-    # D_col = [D_col_X, D_col_Y]
-    # param_u = ps.centripetal(M, D_col)
-    # knot_u = ps.knot_vector(param_u, p, M)
-    #
-    # D_row_X = D_X[0]
-    # D_row_Y = D_Y[0]
-    # D_row = [D_row_X, D_row_Y]
-    # param_v = ps.centripetal(N, D_row)
-    # knot_v = ps.knot_vector(param_v, q, N)
-    #
-    # knot_uv[0] = knot_u
-    # knot_uv[1] = knot_v
-
     param_u = []
     tmp_param = np.zeros((1, M))
     for i in range(N):
@@ -48,8 +33,6 @@ def surface_interpolation(D, p, q):
         D_col_Z = [z[i] for z in D_Z]
         D_col = [D_col_X, D_col_Y, D_col_Z]
         tmp_param = tmp_param + np.array(ps.centripetal(M, D_col))
-        # tmp_param = ps.centripetal(N, D_row)
-        # param_u.append(np.average(np.array(tmp_param)))
     param_u = np.divide(tmp_param, N).tolist()[0]
 
     param_v = []
@@ -60,7 +43,6 @@ def surface_interpolation(D, p, q):
         D_row_Z = D_Z[i]
         D_row = [D_row_X, D_row_Y, D_row_Z]
         tmp_param = tmp_param + np.array(ps.centripetal(N, D_row))
-        # param_v.append(np.average(np.array(tmp_param)))
     param_v = np.divide(tmp_param, M).tolist()[0]
 
     knot_uv[0] = ps.knot_vector(param_u, p, M)
@@ -82,6 +64,7 @@ def surface_interpolation(D, p, q):
             Q[2][j][i] = Q_col[2][j]
 
     P = Q
+
     # calculate control points for every row
     for i in range(M):
         Q_row = [Q[0][i], Q[1][i], Q[2][i]]
@@ -146,7 +129,7 @@ def surface_approximation(D, p, q, E, F):
         D_col_Z = [z[i] for z in D_Z]
         D_col = [D_col_X, D_col_Y, D_col_Z]
         Q_col = bc.curve_approximation(D_col, M, E, p, param_u, knot_uv[0])
-        print(Q_col)
+        # print(Q_col)
         for j in range(E):
             Q[0][j][i] = Q_col[0][j]
             Q[1][j][i] = Q_col[1][j]

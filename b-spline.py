@@ -7,12 +7,18 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 def curve_inter_figure():
+    '''
+    Input: Data points
+    '''
     D_X = [1, 1, 0, -0.5, 1.5, 3, 4, 4.2, 4]
     D_Y = [0, 1, 2, 3, 4, 3.5, 3, 2.5, 2]
     D = [D_X, D_Y]
     D_N = len(D_X)
-    k = 2
+    k = 2               # degree
 
+    '''
+    Step 1. Calculate parameters
+    '''
     # p_uniform = ps.uniform_spaced(D_N)
     # print(p_uniform)
 
@@ -20,11 +26,17 @@ def curve_inter_figure():
     # print(p_chord_length)
 
     p_centripetal = ps.centripetal(D_N, D)
-    print(p_centripetal)
+    # print(p_centripetal)
 
+    '''
+    Step 2. Calculate knot vector
+    '''
     knot = ps.knot_vector(p_centripetal, k, D_N)
     # print(knot)
 
+    '''
+    Step 3. Calculate control points
+    '''
     P_inter = bc.curve_interpolation(D, D_N, k, p_centripetal, knot)
     # print(P_inter)
 
@@ -37,6 +49,9 @@ def curve_inter_figure():
         tmp_y = [P_inter[1][i], P_inter[1][i+1]]
         plt.plot(tmp_x, tmp_y, color='b')
 
+    '''
+    Step 4. Calculate the points on the b-spline curve
+    '''
     piece_num = 80
     p_piece = np.linspace(0, 1, piece_num)
     P_piece = bc.curve(P_inter, D_N, k, p_piece, knot)
@@ -54,13 +69,24 @@ def curve_approx_figure():
     D = [D_X, D_Y]
 
     D_N = len(D_X)
-    k = 4
-    H = 8
+    k = 4           # degree
+    H = 8           # the number of control points
 
+    '''
+    Step 1. Calculate the parameters
+    '''
     p_centripetal = ps.centripetal(D_N, D)
+
+    '''
+    Step 2. Calculate the knot vector
+    '''
     knot = ps.knot_vector(p_centripetal, k, D_N)
+
+    '''
+    Step 3. Calculate the control points
+    '''
     P_control = bc.curve_approximation(D, D_N, H, k, p_centripetal, knot)
-    print(P_control)
+    # print(P_control)
 
     fig = plt.figure()
     for i in range(H):
@@ -74,11 +100,9 @@ def curve_approx_figure():
         tmp_y = [P_control[1][i], P_control[1][i+1]]
         plt.plot(tmp_x, tmp_y, color='b')
 
-    # for i in range(D_N-1):
-    #     tmp_x = [D[i][0], D[i+1][0]]
-    #     tmp_y = [D[i][1], D[i+1][1]]
-    #     plt.plot(tmp_x, tmp_y, color='b')
-
+    '''
+    Step 4. Calculate the points on the b-spline curve
+    '''
     piece_num = 80
     p_piece = np.linspace(0, 1, piece_num)
     p_centripetal_new = ps.centripetal(H, P_control)
@@ -109,8 +133,14 @@ def surface_inter_figure():
     k = 2
     q = 2
 
+    '''
+    Step 1. Calculate control surface's control points
+    '''
     P_control, knot_uv = bs.surface_interpolation(D, k, q)
 
+    '''
+    Step 2. Calculate the points on the b-spline surface
+    '''
     piece_uv = [20, 30]
     P_piece = bs.surface(P_control, k, q, piece_uv, knot_uv)
 
@@ -169,44 +199,29 @@ def surface_approx_figure():
            [-1, -4, -6, -8, -11.5, -15],
            [1, -2, -4, -8, -11, -16]]
 
-    # D_X = [[0.0, 3, 6, 7],
-    #        [0.0, 3, 6, 7],
-    #        [0.0, 3, 6, 7]]
-    # D_Y = [[2, 2, 2, 2],
-    #        [5, 5, 5, 5],
-    #        [10, 10, 10, 10]]
-    # D_Z = [[0, -2, -5, -8],
-    #        [0, -3, -5, -9],
-    #        [0, -2, -5, -8]]
-
     D = [D_X, D_Y, D_Z]
 
     k = 2
     q = 3
     E = len(D_X) - 1
     F = len(D_X[0]) - 1
+
+    '''
+    Step 1. Calculate control surface's control points
+    '''
     P_control = bs.surface_approximation(D, k, q, E, F)
 
+    '''
+    Step 2. Calculate the points on the b-spline surface
+    '''
     piece_uv = [20, 30]
     knot_uv =[[], []]
-    # p_uniform_u = ps.uniform_spaced(E)
-    # p_uniform_v = ps.uniform_spaced(F)
-    # knot_uv[0] = ps.knot_vector(p_uniform_u, k, E)
-    # knot_uv[1] = ps.knot_vector(p_uniform_v, q, F)
-
-    # p_piece = np.linspace(0, 1, piece_num)
-    # p_centripetal_new = ps.centripetal(H, P_control)
-    # knot_new = ps.knot_vector(p_centripetal_new, k, H)
-    # P_piece = bc.curve(P_control, H, k, p_piece, knot_new)
-
     tmp_param = np.zeros((1, E))
     for i in range(F):
         D_col_X = [x[i] for x in P_control[0]]
         D_col_Y = [y[i] for y in P_control[1]]
         D_col = [D_col_X, D_col_Y]
         tmp_param = tmp_param + np.array(ps.centripetal(E, D_col))
-        # tmp_param = ps.centripetal(N, D_row)
-        # param_u.append(np.average(np.array(tmp_param)))
     param_u = np.divide(tmp_param, F).tolist()[0]
 
     param_v = []
@@ -262,6 +277,7 @@ def surface_approx_figure():
             ax.plot(tmp_x, tmp_y, tmp_z, color='g')
 
     plt.show()
+
 
 # curve_inter_figure()
 #

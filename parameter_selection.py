@@ -23,7 +23,7 @@ def chord_length(n, P):
         dis = 0
         for j in range(len(P)):
             dis = dis + (P[j][i] - P[j][i-1])**2
-        dis = np.sqrt(dis)                                  # square计算各元素的平方
+        dis = np.sqrt(dis)
         parameters[0][i] = parameters[0][i-1] + dis
     for i in range(1, n):
         parameters[0][i] = parameters[0][i]/parameters[0][n-1]
