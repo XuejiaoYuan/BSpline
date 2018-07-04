@@ -19,7 +19,7 @@ def curve_interpolation(D, N, k, param, knot):
     for i in range(N):
         for j in range(N):
             Nik[i][j] = bf.BaseFunction(j, k+1, param[i], knot)
-    # Nik[N-1][N-1] = 1
+    Nik[N-1][N-1] = 1
     print(Nik)
     Nik_inv = np.linalg.inv(Nik)
     print(Nik_inv)
