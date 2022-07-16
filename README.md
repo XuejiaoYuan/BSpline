@@ -33,10 +33,14 @@ B样条曲面数据点需要满足MxN矩阵排布形式，否则无法处理。
 ### 2. 曲线插值
 <img src="images/b-spline-curve-inter.png" alt="曲线插值" width=300>
 
-### 3. 曲面拟合
+### 3. 空间曲线插值
+
+<img src="images/b-spline-curve-inter-3d.png" alt="空间曲线插值" width=300>
+
+### 4. 曲面拟合
 <img src="images/b-spline-surface-approx.png" alt="曲面拟合" width=300>
 
-### 4. 曲面插值
+### 5. 曲面插值
 <img src="images/b-spline-surface-inter.png" alt="曲面插值" width=300>
 
 更多插值拟合信息可见"./paper/Fit and Interpolation.pdf"文件。
