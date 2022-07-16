@@ -279,10 +279,74 @@ def surface_approx_figure():
     plt.show()
 
 
+def curve_inter_figure_3D():
+    '''
+    Input: Data points
+    '''
+    D_X = [1, 1, 0, -0.5, 1, 3, 4, 4.2, 4]
+    D_Y = [0, 1, 2,    3, 1, 1, 3, 2.5, 2]
+    D_Z = [0, 1, 2,    3, 4, 5, 6, 7,   8]
+    D = [D_X, D_Y, D_Z]
+    D_N = len(D_X)
+    k = 2               # degree
+
+    '''
+    Step 1. Calculate parameters
+    '''
+    p_uniform = ps.uniform_spaced(D_N)
+    # print(p_uniform)
+
+    # p_chord_length = ps.chord_length(D_N, D)
+    # print(p_chord_length)
+
+    # p_centripetal = ps.centripetal(D_N, D)
+    # print(p_centripetal)
+
+    '''
+    Step 2. Calculate knot vector
+    '''
+    knot = ps.knot_vector(p_uniform, k, D_N)
+    print(knot)
+
+    '''
+    Step 3. Calculate control points
+    '''
+    P_inter = bc.curve_interpolation(D, D_N, k, p_uniform, knot)
+    # print(P_inter)
+
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+
+    for i in range(D_N):
+        ax.scatter(D[0][i], D[1][i], D[2][i], color='r')
+        ax.scatter(P_inter[0][i], P_inter[1][i], P_inter[2][i], color='b')
+    for i in range(D_N - 1):
+        tmp_x = [P_inter[0][i], P_inter[0][i+1]]
+        tmp_y = [P_inter[1][i], P_inter[1][i+1]]
+        tmp_z = [P_inter[2][i], P_inter[2][i+1]]
+        ax.plot(tmp_x, tmp_y, tmp_z, color='b', alpha=0.3)
+
+    '''
+    Step 4. Calculate the points on the b-spline curve
+    '''
+    piece_num = 80
+    p_piece = np.linspace(0, 1, piece_num)
+    P_piece = bc.curve(P_inter, D_N, k, p_piece, knot)
+    # print(P_piece)
+    for i in range(piece_num - 1):
+        tmp_x = [P_piece[0][i], P_piece[0][i+1]]
+        tmp_y = [P_piece[1][i], P_piece[1][i+1]]
+        tmp_z = [P_piece[2][i], P_piece[2][i+1]]
+        ax.plot(tmp_x, tmp_y, tmp_z, color='g')
+    plt.show()
+
+
 curve_inter_figure()
 #
 # curve_approx_figure()
 #
+# curve_inter_figure_3D()
+# 
 # surface_inter_figure()
 #
 # surface_approx_figure()
